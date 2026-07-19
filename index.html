@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canny Tech Support</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&family=Inconsolata:wght@400;500;600&family=Rajdhani:wght@500;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QMP705S3WR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QMP705S3WR');
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#home" class="nav-logo">
+    <img src="img/CTS_Logo.png" alt="Canny Tech Support logo" class="site-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#ai-services">AI Services</a></li>
+    <li><a href="quote_calculator.html">Prices</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE DRAWER (outside nav to avoid stacking/overflow issues) -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="#home">Home</a>
+  <a href="#services">Services</a>
+  <a href="#ai-services">AI Services</a>
+  <a href="quote_calculator.html">Prices</a>
+  <a href="#about">About</a>
+  <a href="#contact" class="nav-cta">Contact Us</a>
+  <a href="blog.html">Blog</a>
+
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-copy">
+      <div class="hero-badge">Serving the North East of England</div>
+      <h1>Technology made <span>simple</span>,<br>support you can trust.</h1>
+      <p class="hero-sub">Friendly, patient one-on-one tech help for everyone — whether it's your phone, computer, or staying safe online.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Get in Touch →</a>
+        <a href="#services" class="btn-secondary">Explore Services</a>
+      </div>
+      <div class="hero-card" aria-label="Quick problem solver">
+        <p class="hero-card-label">I need help with my...</p>
+        <div class="hero-options" role="group" aria-label="Quick help topics">
+          <button type="button" class="help-pill" data-target="services">iPhone</button>
+          <button type="button" class="help-pill" data-target="services">Printer</button>
+          <button type="button" class="help-pill" data-target="services">Laptop</button>
+          <button type="button" class="help-pill" data-target="ai-services">AI questions</button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <img src="img/Canny-Tech-Guy.png" alt="Pixel art tech support helper" width="120" height="320">
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="services-header">
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-desc">We offer personalised, friendly tech support tailored to your pace and comfort level.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🧑‍💻</div>
+        <h3>One-on-One Tech Help</h3>
+        <p>Personalised assistance via phone or home visit to solve your computer or internet issues — at your pace, no jargon.</p>
+        <img src="img/CTS_Tech_Easy.PNG" alt="Tech support professional helping with devices" class="service-card-image">
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📱</div>
+        <h3>Device Setup</h3>
+        <p>We help set up smartphones, tablets, computers, and printers so you can use them with ease and confidence.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔐</div>
+        <h3>Online Safety</h3>
+        <p>Advice on staying safe online — from password security to avoiding scams, phishing attempts, and malware.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🏠</div>
+        <h3>Home Visits</h3>
+        <p>Can't come to us? No problem. We come to you anywhere in the Newcastle and wider North East area.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📞</div>
+        <h3>Remote Support</h3>
+        <p>Get help from the comfort of your own home. Quick fixes and walkthroughs delivered over phone or video call.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎓</div>
+        <h3>Teaching & Guidance</h3>
+        <p>We don't just fix — we teach. You will gain the confidence to use your devices independently with patient, step-by-step guidance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI SERVICES -->
+<section id="ai-services">
+  <div class="container">
+    <div class="section-label">Cutting Edge</div>
+    <h2 class="section-title">AI Services</h2>
+    <p class="section-desc">Helping you understand and harness the power of artificial intelligence in your everyday life and business.</p>
+    <div class="ai-grid">
+      <div class="featured-grid">
+        <article class="featured-card featured-ai">
+          <div class="card-tag">Future-facing support</div>
+          <h3>AI Services</h3>
+          <p>Hands-on guidance for ChatGPT, Copilot, and AI tools that save time without the stress. Learn what works for your business and what doesn’t.</p>
+          <ul class="featured-list">
+            <li>Intro to AI tools with real examples</li>
+            <li>Practical workflows, no hype</li>
+            <li>Safe, local advice you can trust</li>
+          </ul>
+        </article>
+        <article class="featured-card featured-small">
+          <h4>Device Setup</h4>
+          <p>Warm, patient onboarding for phones, tablets, laptops, and home devices.</p>
+        </article>
+        <article class="featured-card featured-small">
+          <h4>Online Safety</h4>
+          <p>Clear guidance to avoid scams, protect passwords, and stay secure online.</p>
+        </article>
+      </div>
+      <div class="ai-details">
+        <div class="ai-feature">
+          <div class="ai-feature-icon">🤖</div>
+          <div>
+            <h4>AI Tool Introduction</h4>
+            <p>We introduce useful AI tools in plain language and show you how to use them.</p>
+          </div>
+        </div>
+        <div class="ai-feature">
+          <div class="ai-feature-icon">💼</div>
+          <div>
+            <h4>AI for Your Business</h4>
+            <p>Discover how AI can save you time on admin, customer comms, and daily tasks.</p>
+          </div>
+        </div>
+        <div class="ai-feature">
+          <div class="ai-feature-icon">📋</div>
+          <div>
+            <h4>AI Consulting</h4>
+            <p>Unbiased advice on where AI fits in your workflow — no confusing jargon.</p>
+          </div>
+        </div>
+        <div class="ai-feature">
+          <div class="ai-feature-icon">🛡️</div>
+          <div>
+            <h4>AI Safety & Awareness</h4>
+            <p>Understand risks and benefits so you can use AI confidently and responsibly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">Who We Are</div>
+    <h2 class="section-title">About Canny Tech Support</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>We are a dedicated service here to help people use technology confidently. Our friendly team provides patient, one-on-one help — no jargon, no rushing, and no judgement.</p>
+        <p>We believe in teaching you the skills you need in a supportive, respectful way. Whether you're getting to grips with your first smartphone or trying to protect yourself online, we're here for every step.</p>
+        <p>Serving Newcastle Upon Tyne and the wider North East of England, our mission is to make tech easy and accessible for absolutely everyone.</p>
+        <a href="#contact" class="btn-primary" style="display:inline-flex; margin-top: 24px;">Work With Us →</a>
+        <div class="stats-row">
+          <div class="stat">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Local</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">5★</div>
+            <div class="stat-label">Service</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">NE1</div>
+            <div class="stat-label">Based</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Contact Us</h2>
+    <p class="section-desc">Ready to get your tech sorted? Reach out — we'd love to help.</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h4>Location</h4>
+            <p>Newcastle Upon Tyne,<br>Tyne & Wear</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h4>Phone</h4>
+            <a href="tel:07395555464">07395 555 464</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <h4>Email</h4>
+            <a href="mailto:info@cannytechsupport.net">info@cannytechsupport.net</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <h4>Response Time</h4>
+            <p>We aim to reply within 24 hours</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📷</div>
+          <div>
+            <h4>Follow Us</h4>
+            <a href="https://www.instagram.com/canny_tech_support?igsh=MTlrdXo3a3o2NHA3bA%3D%3D&utm_source=qr" target="_blank">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3>Send us a message</h3>
+        <form action="https://formspree.io/f/mzdakapl" method="POST" id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" name="first_name" id="fname" placeholder="John">
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" name="last_name" id="lname" placeholder="Smith">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" name="email" id="email" placeholder="john@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="service">What do you need help with?</label>
+            <select name="service" id="service">
+              <option value="">Select a service...</option>
+              <option>One-on-One Tech Help</option>
+              <option>Device Setup</option>
+              <option>Online Safety</option>
+              <option>AI Services</option>
+              <option>Home Visit</option>
+              <option>Something else</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea name="message" id="message" placeholder="Tell us a bit about what you need help with..." required></textarea>
+          </div>
+          <button type="submit" class="form-submit" id="submit-btn">Send Message ✓</button>
+          <div class="success-msg" id="success-msg">
+            ✓ Message sent! We'll be in touch within 24 hours.
+          </div>
+          <div class="success-msg" id="error-msg" style="background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.3);color:#f87171;">
+            ✗ Something went wrong. Please try again or email us directly.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="#home" class="footer-logo">
+      <img src="img/CTS_Logo.png" alt="Canny Tech Support logo" class="site-logo footer-logo-image">
+      <span class="footer-logo-text">Canny Tech Support</span>
+    </a>
+    <p>Newcastle Upon Tyne · <a href="tel:07395555464">07395 555 464</a> · <a href="mailto:info@cannytechsupport.net">info@cannytechsupport.net</a></p>
+    <p style="margin-top:10px">© 2026 Canny Tech Support · Making technology easy</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Golf Scorecard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QMP705S3WR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QMP705S3WR');
+</script>
+<style>
+:root {
+  --bg:        #1a3a28;
+  --bg2:       #16321f;
+  --surface:   #1e4230;
+  --surface2:  #234a37;
+  --border:    rgba(255,255,255,0.10);
+  --gold:      #c9a84c;
+  --gold2:     #e5c76b;
+  --cream:     #f0ebe0;
+  --muted:     rgba(240,235,224,0.55);
+  --green-acc: #4a9e6b;
+
+  --eagle:     #f5c842;
+  --birdie:    #7ee8a2;
+  --par-c:     #f0ebe0;
+  --bogey:     #f4a261;
+  --double:    #e76f51;
+  --triple:    #c1121f;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Prevent iOS zoom on input focus */
+input { font-size: 16px !important; }
+
+/* Remove number spinners */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+
+/* iOS Safari text color fix */
+input[type=number], input[type=text] {
+  -webkit-text-fill-color: inherit;
+  opacity: 1;
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Lato', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════
+   SETUP SCREEN
+══════════════════════════════════════ */
+#setup {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 40px 16px 60px;
+  gap: 0;
+}
+
+.setup-logo {
+  width: 56px;
+  height: 56px;
+  margin-bottom: 14px;
+}
+
+.setup-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 7vw, 3rem);
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: center;
+}
+
+.setup-sub {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 6px;
+  margin-bottom: 36px;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+.setup-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.45);
+}
+
+.field-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  font-family: 'Playfair Display', serif;
+}
+
+.text-input {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: var(--cream);
+  -webkit-text-fill-color: var(--cream);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.text-input::placeholder { color: rgba(240,235,224,0.3); -webkit-text-fill-color: rgba(240,235,224,0.3); }
+.text-input:focus { border-color: var(--gold); }
+
+/* Holes toggle */
+.holes-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.hole-opt {
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 13px 10px;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.18s;
+  user-select: none;
+}
+.hole-opt:hover { border-color: var(--gold); color: var(--cream); }
+.hole-opt.active {
+  background: var(--surface2);
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold) inset;
+}
+
+/* Players */
+.players-list { display: flex; flex-direction: column; gap: 10px; }
+.player-row {
+  display: grid;
+  grid-template-columns: 1fr 90px;
+  gap: 8px;
+  align-items: flex-start;
+}
+.hcp-input {
+  background: var(--bg2);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 12px 10px;
+  color: var(--cream);
+  -webkit-text-fill-color: var(--cream);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.95rem;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.hcp-input::placeholder { color: rgba(240,235,224,0.3); -webkit-text-fill-color: rgba(240,235,224,0.3); }
+.hcp-input:focus { border-color: var(--gold); }
+.hcp-label {
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 3px;
+  padding-left: 2px;
+}
+
+/* Start button */
+.start-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none;
+  border-radius: 10px;
+  color: var(--bg2);
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+}
+.start-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,0.5); }
+.start-btn:active { transform: translateY(0); }
+
+/* ══════════════════════════════════════
+   SCORECARD SCREEN
+══════════════════════════════════════ */
+#scorecard {
+  display: none;
+  min-height: 100vh;
+  padding: 0 0 60px;
+}
+
+/* Header */
+.sc-header {
+  text-align: center;
+  padding: 28px 20px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.sc-course {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 6vw, 2.4rem);
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+}
+.sc-meta {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--muted);
+  margin-top: 5px;
+  letter-spacing: 0.06em;
+}
+
+/* Table wrapper */
+.table-outer {
+  padding: 16px 12px 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Table */
+table {
+  width: auto;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+  background: var(--surface);
+  border-radius: 12px;
+  overflow: visible;
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+}
+
+/* Freeze the player name column */
+thead tr.header-row th.name-col,
+thead tr.par-row   th.name-col,
+tbody tr           td.name-col {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+thead tr.header-row th.name-col { background: var(--bg2); min-width: 90px; }
+thead tr.par-row    th.name-col { background: rgba(26,50,31,0.97); min-width: 90px; }
+tbody tr            td.name-col { background: var(--surface); min-width: 90px; }
+tbody tr:nth-child(even) td.name-col { background: #1f4433; }
+
+/* Freeze Total column on the right */
+thead tr.header-row th.tot-col,
+thead tr.par-row    th.tot-col,
+tbody tr            td.tot-col {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+}
+thead tr.header-row th.tot-col { background: var(--bg2); }
+thead tr.par-row    th.tot-col { background: rgba(26,50,31,0.97); }
+tbody tr            td.tot-col { background: rgba(26,42,30,0.97); }
+tbody tr:nth-child(even) td.tot-col { background: #1a3525; }
+
+/* Fixed widths for hole/total columns so they don't squish */
+thead tr.header-row th:not(.name-col):not(.tot-col),
+thead tr.par-row    th:not(.name-col):not(.tot-col),
+tbody tr            td:not(.name-col):not(.tot-col) {
+  min-width: 44px;
+  width: 44px;
+}
+thead tr.header-row th.tot-col,
+thead tr.par-row    th.tot-col,
+tbody tr            td.tot-col {
+  min-width: 52px;
+  width: 52px;
+}
+
+/* Header row */
+thead tr.header-row th {
+  background: var(--bg2);
+  padding: 10px 4px;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.6rem, 2vw, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid rgba(201,168,76,0.25);
+  text-align: center;
+  overflow: hidden;
+}
+thead tr.header-row th.name-col {
+  text-align: left;
+  padding-left: 12px;
+}
+
+/* Par row */
+thead tr.par-row th {
+  background: rgba(26,50,31,0.9);
+  padding: 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  text-align: center;
+  overflow: hidden;
+}
+thead tr.par-row th.name-col {
+  text-align: left;
+  padding-left: 12px;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.62rem, 2vw, 0.75rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.par-total-cell, .par-out-cell, .par-in-cell {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.7rem, 2vw, 0.85rem);
+  font-weight: 700;
+  color: var(--muted);
+  padding: 8px 4px;
+}
+
+/* Par input */
+.par-inp {
+  display: block;
+  width: 100%;
+  height: 34px;
+  background: transparent;
+  border: none;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.7rem, 2.2vw, 0.85rem);
+  font-weight: 700;
+  color: var(--muted);
+  -webkit-text-fill-color: var(--muted);
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+.par-inp:focus {
+  color: var(--cream);
+  -webkit-text-fill-color: var(--cream);
+  background: rgba(201,168,76,0.1);
+}
+
+/* Player data rows */
+tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+
+td {
+  padding: 0;
+  text-align: center;
+  overflow: hidden;
+}
+td.name-col {
+  padding: 0 6px 0 12px;
+  text-align: left;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.65rem, 2.2vw, 0.85rem);
+  font-weight: 700;
+  color: var(--cream);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: rgba(0,0,0,0.08);
+}
+
+/* Score input */
+.sc-inp {
+  display: block;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  border: none;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.8rem, 2.5vw, 1rem);
+  font-weight: 700;
+  color: var(--cream);
+  -webkit-text-fill-color: var(--cream);
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 0;
+  box-sizing: border-box;
+  transition: background 0.12s;
+}
+.sc-inp::placeholder { color: rgba(240,235,224,0.2); -webkit-text-fill-color: rgba(240,235,224,0.2); }
+.sc-inp:focus { background: rgba(201,168,76,0.12); color: var(--gold2); -webkit-text-fill-color: var(--gold2); }
+
+/* Score colour classes */
+.sc-inp.eagle      { color: var(--eagle);  -webkit-text-fill-color: var(--eagle);  background: rgba(245,200,66,0.15); }
+.sc-inp.birdie     { color: var(--birdie); -webkit-text-fill-color: var(--birdie); background: rgba(126,232,162,0.13); }
+.sc-inp.par-hit    { color: var(--par-c);  -webkit-text-fill-color: var(--par-c); }
+.sc-inp.bogey      { color: var(--bogey);  -webkit-text-fill-color: var(--bogey);  background: rgba(244,162,97,0.1); }
+.sc-inp.double     { color: var(--double); -webkit-text-fill-color: var(--double); background: rgba(231,111,81,0.14); }
+.sc-inp.triple     { color: var(--triple); -webkit-text-fill-color: var(--triple); background: rgba(193,18,31,0.16); }
+
+/* Subtotal / total cells */
+.sub-cell, .tot-cell {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(0.7rem, 2.2vw, 0.9rem);
+  font-weight: 700;
+  padding: 0 4px;
+  text-align: center;
+  white-space: nowrap;
+}
+.sub-cell { color: var(--muted); background: rgba(0,0,0,0.1); }
+.tot-cell { color: var(--gold);  background: rgba(0,0,0,0.15); }
+
+/* ── LEGEND ── */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  justify-content: center;
+  padding: 14px 16px 0;
+  font-size: clamp(0.62rem, 2vw, 0.72rem);
+  color: var(--muted);
+}
+.lg-item { display: flex; align-items: center; gap: 5px; }
+.lg-dot  { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── RESULTS ── */
+#results {
+  display: none;
+  margin: 28px 12px 0;
+  border-top: 1px solid rgba(201,168,76,0.2);
+  padding-top: 28px;
+}
+.results-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 18px;
+  letter-spacing: 0.06em;
+}
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+.res-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+.res-card:hover { transform: translateY(-2px); }
+.res-card.winner { border-color: var(--gold); background: var(--surface2); }
+.res-crown { font-size: 1.3rem; margin-bottom: 4px; }
+.res-name  { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--cream); margin-bottom: 6px; }
+.res-score { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; }
+.res-par   { font-size: 0.78rem; color: var(--muted); margin-top: 4px; font-style: italic; }
+.res-hcp   { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(201,168,76,0.18); font-size: 0.75rem; color: var(--muted); }
+.res-hcp span { display: block; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--gold2); }
+
+/* ── ACTION BAR ── */
+.action-bar {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 24px 12px 0;
+}
+.btn-ghost {
+  padding: 11px 22px;
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.4);
+  border-radius: 8px;
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-ghost:hover { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+.btn-filled {
+  padding: 11px 22px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none;
+  border-radius: 8px;
+  color: var(--bg2);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s;
+  box-shadow: 0 3px 14px rgba(201,168,76,0.3);
+}
+.btn-filled:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.45); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+#setup    { animation: fadeUp 0.6s ease both; }
+#scorecard { animation: fadeUp 0.5s ease both; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 420px) {
+  .setup-card { padding: 24px 16px; }
+  .player-row { grid-template-columns: 1fr 78px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     SETUP SCREEN
+════════════════════════════════ -->
+<div id="setup">
+
+  <!-- Golf flag SVG crest -->
+  <svg class="setup-logo" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="28" cy="28" r="26.5" stroke="#c9a84c" stroke-width="1.2" stroke-dasharray="3 2.5" opacity="0.7"/>
+    <line x1="28" y1="46" x2="28" y2="14" stroke="#c9a84c" stroke-width="1.8"/>
+    <polygon points="28,14 42,21 28,28" fill="#c9a84c" opacity="0.9"/>
+    <path d="M16 44 Q22 40 28 44 Q34 48 40 44" stroke="#4a9e6b" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <circle cx="28" cy="46" r="2" fill="#4a9e6b" opacity="0.7"/>
+  </svg>
+
+  <div class="setup-title">Golf Scorecard</div>
+  <div class="setup-sub">— track every stroke, every hole —</div>
+
+  <div class="setup-card">
+
+    <!-- Course name -->
+    <div>
+      <div class="field-label">Course Name</div>
+      <input class="text-input" type="text" id="s-course" placeholder="e.g. Augusta National" maxlength="60" autocomplete="off">
+    </div>
+
+    <!-- Holes -->
+    <div>
+      <div class="field-label">Number of Holes</div>
+      <div class="holes-toggle">
+        <div class="hole-opt active" id="opt-9" onclick="setHoles(9)">9 Holes</div>
+        <div class="hole-opt" id="opt-18" onclick="setHoles(18)">18 Holes</div>
+      </div>
+    </div>
+
+    <!-- Players -->
+    <div>
+      <div class="field-label">Players <span style="font-weight:400;font-style:italic;color:var(--muted);font-size:0.65rem">(1 – 4)</span></div>
+      <div class="players-list" id="players-list">
+        <div>
+          <div class="player-row">
+            <input class="text-input pname" type="text" placeholder="Player 1 name" maxlength="28" autocomplete="off">
+            <input class="hcp-input phcp" type="number" placeholder="HCP" min="0" max="54" step="0.1">
+          </div>
+          <div class="hcp-label">Handicap index (optional)</div>
+        </div>
+        <div>
+          <div class="player-row">
+            <input class="text-input pname" type="text" placeholder="Player 2 name" maxlength="28" autocomplete="off">
+            <input class="hcp-input phcp" type="number" placeholder="HCP" min="0" max="54" step="0.1">
+          </div>
+        </div>
+        <div>
+          <div class="player-row">
+            <input class="text-input pname" type="text" placeholder="Player 3 (optional)" maxlength="28" autocomplete="off">
+            <input class="hcp-input phcp" type="number" placeholder="HCP" min="0" max="54" step="0.1">
+          </div>
+        </div>
+        <div>
+          <div class="player-row">
+            <input class="text-input pname" type="text" placeholder="Player 4 (optional)" maxlength="28" autocomplete="off">
+            <input class="hcp-input phcp" type="number" placeholder="HCP" min="0" max="54" step="0.1">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="startRound()">⛳ Start Round</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     SCORECARD SCREEN
+════════════════════════════════ -->
+<div id="scorecard">
+
+  <div class="sc-header">
+    <div class="sc-course" id="sc-course">Golf Course</div>
+    <div class="sc-meta" id="sc-meta">9 Holes · 1 Player</div>
+  </div>
+
+  <div class="table-outer">
+    <table id="main-table"></table>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="lg-item"><div class="lg-dot" style="background:var(--eagle)"></div> Eagle (−2)</div>
+    <div class="lg-item"><div class="lg-dot" style="background:var(--birdie)"></div> Birdie (−1)</div>
+    <div class="lg-item"><div class="lg-dot" style="background:var(--par-c);border:1px solid rgba(255,255,255,0.25)"></div> Par</div>
+    <div class="lg-item"><div class="lg-dot" style="background:var(--bogey)"></div> Bogey (+1)</div>
+    <div class="lg-item"><div class="lg-dot" style="background:var(--double)"></div> Double (+2)</div>
+    <div class="lg-item"><div class="lg-dot" style="background:var(--triple)"></div> Triple+</div>
+  </div>
+
+  <!-- Results -->
+  <div id="results">
+    <div class="results-title">⛳ Final Results</div>
+    <div class="results-grid" id="results-grid"></div>
+  </div>
+
+  <!-- Actions -->
+  <div class="action-bar">
+    <button class="btn-ghost" onclick="calcResults()">Calculate Results</button>
+    <button class="btn-ghost" id="btn-clear" data-confirm="0" onclick="clearScores()">Clear Scores</button>
+    <button class="btn-filled" onclick="newGame()">New Game</button>
+  </div>
+
+</div>
+
+<script>
+/* ── State ── */
+let holes   = 9;
+let players = [];
+let pars    = [];
+
+/* ── Setup ── */
+function setHoles(n) {
+  holes = n;
+  document.getElementById('opt-9').classList.toggle('active', n === 9);
+  document.getElementById('opt-18').classList.toggle('active', n === 18);
+}
+
+function startRound() {
+  const courseVal = document.getElementById('s-course').value.trim();
+  const nameEls   = document.querySelectorAll('.pname');
+  const hcpEls    = document.querySelectorAll('.phcp');
+
+  players = [];
+  nameEls.forEach((el, i) => {
+    const n = el.value.trim();
+    if (n) players.push({ name: n, hcp: parseFloat(hcpEls[i].value) || 0 });
+  });
+
+  if (!players.length) { alert('Please enter at least one player name.'); return; }
+
+  pars = Array(holes).fill(4);
+
+  document.getElementById('sc-course').textContent = courseVal || 'Golf Course';
+  document.getElementById('sc-meta').textContent   = `${holes} Holes · ${players.length} Player${players.length > 1 ? 's' : ''}`;
+
+  buildTable();
+
+  document.getElementById('setup').style.display     = 'none';
+  document.getElementById('scorecard').style.display = 'block';
+  document.getElementById('results').style.display   = 'none';
+}
+
+/* ── Build table ── */
+function buildTable() {
+  const tbl  = document.getElementById('main-table');
+  const is18 = holes === 18;
+  const half = is18 ? 9 : holes;
+
+  /* No colgroup needed — table is scrollable with auto layout */
+  let cg = '';
+
+  /* ── Header row ── */
+  let head = '<thead>';
+  head += '<tr class="header-row">';
+  head += '<th class="name-col">Player</th>';
+  for (let h = 1; h <= half; h++)  head += `<th>H${h}</th>`;
+  if (is18) {
+    head += '<th>Out</th>';
+    for (let h = 10; h <= 18; h++) head += `<th>H${h}</th>`;
+    head += '<th>In</th>';
+  }
+  head += '<th class="tot-col">Total</th></tr>';
+
+  /* ── Par row ── */
+  head += '<tr class="par-row">';
+  head += '<th class="name-col">Par</th>';
+  for (let h = 0; h < half; h++) {
+    head += `<th><input class="par-inp" type="number" id="p-${h}" value="4" min="3" max="5" oninput="parChanged(${h},this.value)"></th>`;
+  }
+  if (is18) {
+    head += `<th class="par-out-cell" id="par-out">36</th>`;
+    for (let h = 9; h < 18; h++) {
+      head += `<th><input class="par-inp" type="number" id="p-${h}" value="4" min="3" max="5" oninput="parChanged(${h},this.value)"></th>`;
+    }
+    head += `<th class="par-in-cell" id="par-in">36</th>`;
+  }
+  const totalPar = pars.reduce((a,b)=>a+b,0);
+  head += `<th class="par-total-cell tot-col" id="par-tot">${totalPar}</th>`;
+  head += '</tr></thead>';
+
+  /* ── Body rows ── */
+  let body = '<tbody>';
+  players.forEach((p, pi) => {
+    body += '<tr>';
+    body += `<td class="name-col">${esc(p.name)}</td>`;
+    for (let h = 0; h < half; h++) {
+      body += `<td><input class="sc-inp" type="number" id="s-${pi}-${h}" min="1" max="20" placeholder="·" oninput="scoreChanged(${pi},${h},this)"></td>`;
+    }
+    if (is18) {
+      body += `<td class="sub-cell" id="out-${pi}">—</td>`;
+      for (let h = 9; h < 18; h++) {
+        body += `<td><input class="sc-inp" type="number" id="s-${pi}-${h}" min="1" max="20" placeholder="·" oninput="scoreChanged(${pi},${h},this)"></td>`;
+      }
+      body += `<td class="sub-cell" id="in-${pi}">—</td>`;
+    }
+    body += `<td class="tot-cell tot-col" id="tot-${pi}">—</td>`;
+    body += '</tr>';
+  });
+  body += '</tbody>';
+
+  tbl.innerHTML = cg + head + body;
+}
+
+/* ── Par change ── */
+function parChanged(idx, val) {
+  pars[idx] = parseInt(val) || 4;
+  const is18 = holes === 18;
+  if (is18) {
+    const outP = pars.slice(0,9).reduce((a,b)=>a+b,0);
+    const inP  = pars.slice(9).reduce((a,b)=>a+b,0);
+    document.getElementById('par-out').textContent = outP;
+    document.getElementById('par-in').textContent  = inP;
+    document.getElementById('par-tot').textContent = outP + inP;
+  } else {
+    document.getElementById('par-tot').textContent = pars.reduce((a,b)=>a+b,0);
+  }
+  /* re-colour existing scores */
+  players.forEach((_, pi) => {
+    const el = document.getElementById(`s-${pi}-${idx}`);
+    if (el && el.value) scoreChanged(pi, idx, el);
+  });
+}
+
+/* ── Score change ── */
+function scoreChanged(pi, hole, el) {
+  const v   = parseInt(el.value);
+  const par = pars[hole] || 4;
+
+  el.className = 'sc-inp';
+  if (!isNaN(v)) {
+    const d = v - par;
+    if      (d <= -2) el.classList.add('eagle');
+    else if (d === -1) el.classList.add('birdie');
+    else if (d ===  0) el.classList.add('par-hit');
+    else if (d ===  1) el.classList.add('bogey');
+    else if (d ===  2) el.classList.add('double');
+    else               el.classList.add('triple');
+  }
+  updateTotals(pi);
+}
+
+/* ── Running totals ── */
+function updateTotals(pi) {
+  const is18 = holes === 18;
+  let total = 0;
+
+  if (is18) {
+    let out = 0, outOk = true, inS = 0, inOk = true;
+    for (let h = 0; h < 9;  h++) { const v = iv(`s-${pi}-${h}`); if (v !== null) out += v; else outOk = false; }
+    for (let h = 9; h < 18; h++) { const v = iv(`s-${pi}-${h}`); if (v !== null) inS += v; else inOk  = false; }
+    const oEl = document.getElementById(`out-${pi}`);
+    const iEl = document.getElementById(`in-${pi}`);
+    if (oEl) oEl.textContent = outOk ? out : (out > 0 ? out+'…' : '—');
+    if (iEl) iEl.textContent = inOk  ? inS : (inS > 0 ? inS+'…' : '—');
+    total = out + inS;
+  } else {
+    for (let h = 0; h < holes; h++) { const v = iv(`s-${pi}-${h}`); if (v !== null) total += v; }
+  }
+
+  const tEl = document.getElementById(`tot-${pi}`);
+  if (tEl) tEl.textContent = total > 0 ? total : '—';
+}
+
+function iv(id) {
+  const el = document.getElementById(id);
+  if (!el || el.value === '') return null;
+  const n = parseInt(el.value);
+  return isNaN(n) ? null : n;
+}
+
+/* ── Calculate results ── */
+function calcResults() {
+  const totalPar = pars.reduce((a,b)=>a+b,0);
+  const data = players.map((p, pi) => {
+    let score = 0, filled = 0;
+    for (let h = 0; h < holes; h++) {
+      const v = iv(`s-${pi}-${h}`);
+      if (v !== null) { score += v; filled++; }
+    }
+    return { ...p, score, filled };
+  }).filter(r => r.filled > 0);
+
+  if (!data.length) { alert('Please enter some scores first.'); return; }
+
+  const best = Math.min(...data.map(r => r.score));
+  const grid = document.getElementById('results-grid');
+
+  grid.innerHTML = data.map(r => {
+    const diff    = r.score - totalPar;
+    const diffStr = diff === 0 ? 'Level par' : diff > 0 ? `+${diff} over par` : `${diff} under par`;
+    const win     = r.score === best && r.filled === holes;
+    const net     = r.score - Math.round(r.hcp * (holes / 18));
+    const netDiff = net - totalPar;
+    const netStr  = netDiff === 0 ? 'Level par net' : netDiff > 0 ? `+${netDiff} net` : `${netDiff} net`;
+    return `
+      <div class="res-card ${win ? 'winner' : ''}">
+        ${win ? '<div class="res-crown">🏆</div>' : ''}
+        <div class="res-name">${esc(r.name)}</div>
+        <div class="res-score">${r.score}</div>
+        <div class="res-par">${r.filled < holes ? `(${r.filled}/${holes} holes) ` : ''}${diffStr}</div>
+        ${r.hcp > 0 ? `<div class="res-hcp">Handicap ${r.hcp}<span>${net}</span><small>${netStr}</small></div>` : ''}
+      </div>`;
+  }).join('');
+
+  const sec = document.getElementById('results');
+  sec.style.display = 'block';
+  sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ── Clear scores ── */
+function clearScores() {
+  const btn = document.getElementById('btn-clear');
+  if (btn.dataset.confirm === '1') {
+    doReset();
+    btn.textContent = 'Clear Scores';
+    btn.dataset.confirm = '0';
+  } else {
+    btn.textContent = 'Tap again to confirm';
+    btn.dataset.confirm = '1';
+    setTimeout(() => {
+      btn.textContent = 'Clear Scores';
+      btn.dataset.confirm = '0';
+    }, 2500);
+  }
+}
+
+function doReset() {
+  players.forEach((_, pi) => {
+    for (let h = 0; h < holes; h++) {
+      const el = document.getElementById(`s-${pi}-${h}`);
+      if (el) {
+        el.value = '';
+        el.className = 'sc-inp';
+        el.style.background = '';
+        el.style.color = '';
+        el.style.webkitTextFillColor = '';
+      }
+    }
+    ['tot-', 'out-', 'in-'].forEach(pfx => {
+      const el = document.getElementById(`${pfx}${pi}`);
+      if (el) el.textContent = '—';
+    });
+  });
+  document.getElementById('results').style.display = 'none';
+}
+
+/* ── New game ── */
+function newGame() {
+  /* Reset all setup form fields */
+  document.getElementById('s-course').value = '';
+  document.querySelectorAll('.pname').forEach(el => el.value = '');
+  document.querySelectorAll('.phcp').forEach(el => el.value = '');
+
+  /* Reset holes selection back to 9 */
+  setHoles(9);
+
+  /* Reset state */
+  players = [];
+  pars    = [];
+  holes   = 9;
+
+  /* Clear the table so stale data is gone */
+  document.getElementById('main-table').innerHTML = '';
+  document.getElementById('results-grid').innerHTML = '';
+
+  /* Switch screens */
+  document.getElementById('scorecard').style.display = 'none';
+  document.getElementById('results').style.display   = 'none';
+  document.getElementById('setup').style.display     = 'flex';
+}
+
+/* ── Helpers ── */
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* Prevent scroll/arrow key changing numbers */
+document.addEventListener('wheel',   e => { if (e.target.type === 'number') e.preventDefault(); }, { passive: false });
+document.addEventListener('keydown', e => { if (e.target.type === 'number' && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) e.preventDefault(); });
+</script>
+</body>
+</html>

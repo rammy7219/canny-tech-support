@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tech Website — Fonts & Colours</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&family=Rajdhani:wght@400;600;700&family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&family=Exo+2:wght@300;400;700;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QMP705S3WR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QMP705S3WR');
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    padding-top: 1rem;
+  }
+
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #e8e8f0 0%, #8b8baa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* ——— SECTION TITLES ——— */
+  .section-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ——— COLOUR PALETTES ——— */
+  .palettes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .palette-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .palette-swatches {
+    display: flex;
+    height: 90px;
+  }
+
+  .swatch {
+    flex: 1;
+    position: relative;
+    transition: flex 0.3s ease;
+    cursor: pointer;
+  }
+  .swatch:hover { flex: 1.8; }
+
+  .swatch-label {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .swatch:hover .swatch-label { opacity: 1; }
+
+  .palette-info {
+    padding: 1rem 1.2rem 1.2rem;
+  }
+
+  .palette-name {
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .palette-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .palette-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.7rem;
+  }
+
+  .tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.62rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    border: 1px solid;
+    letter-spacing: 0.03em;
+  }
+
+  /* ——— FONT SHOWCASE ——— */
+  .fonts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .font-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .font-card::before {
+    content: attr(data-role);
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .font-preview-big {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+    line-height: 1.1;
+    margin-bottom: 0.8rem;
+    background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.5));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .font-preview-body {
+    font-size: 0.88rem;
+    color: #a0a0b8;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .font-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid var(--border);
+    padding-top: 0.8rem;
+  }
+
+  .font-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .font-source {
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+
+  /* ——— PAIRINGS ——— */
+  .pairings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .pairing-card {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .pairing-preview {
+    padding: 2rem 2rem 1.5rem;
+    min-height: 160px;
+  }
+
+  .pairing-heading {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  .pairing-body {
+    font-size: 0.85rem;
+    line-height: 1.65;
+    opacity: 0.75;
+  }
+
+  .pairing-meta {
+    background: var(--surface);
+    padding: 0.9rem 1.2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+  }
+
+  .pairing-label {
+    font-family: 'Space Mono', monospace;
+    color: var(--muted);
+  }
+
+  .pairing-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.07);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Fonts & Colours for Tech Websites</h1>
+  <p>Curated palettes and typefaces — hover swatches to see hex codes</p>
+</header>
+
+<!-- ——— COLOUR PALETTES ——— -->
+<div class="section-title">Colour Palettes</div>
+<div class="palettes-grid">
+
+  <!-- 1. Midnight Electric -->
+  <div class="palette-card">
+    <div class="palette-swatches">
+      <div class="swatch" style="background:#0a0f1e"><div class="swatch-label">#0A0F1E</div></div>
+      <div class="swatch" style="background:#111827"><div class="swatch-label">#111827</div></div>
+      <div class="swatch" style="background:#00d2ff"><div class="swatch-label">#00D2FF</div></div>
+      <div class="swatch" style="background:#7c3aed"><div class="swatch-label">#7C3AED</div></div>
+      <div class="swatch" style="background:#e2e8f0"><div class="swatch-label">#E2E8F0</div></div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Midnight Electric</div>
+      <div class="palette-desc">Deep navy backdrop with electric cyan and violet accents. Feels futuristic and premium.</div>
+      <div class="palette-tags">
+        <span class="tag" style="color:#00d2ff; border-color:#00d2ff33">Dark</span>
+        <span class="tag" style="color:#7c3aed; border-color:#7c3aed44">SaaS</span>
+        <span class="tag" style="color:#6b6b80; border-color:#6b6b8044">Enterprise</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Arctic Clean -->
+  <div class="palette-card">
+    <div class="palette-swatches">
+      <div class="swatch" style="background:#f0f4ff"><div class="swatch-label">#F0F4FF</div></div>
+      <div class="swatch" style="background:#ffffff"><div class="swatch-label">#FFFFFF</div></div>
+      <div class="swatch" style="background:#2563eb"><div class="swatch-label">#2563EB</div></div>
+      <div class="swatch" style="background:#0ea5e9"><div class="swatch-label">#0EA5E9</div></div>
+      <div class="swatch" style="background:#1e293b"><div class="swatch-label">#1E293B</div></div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Arctic Clean</div>
+      <div class="palette-desc">Crisp white base with trust-building blues. Classic tech, universally readable and professional.</div>
+      <div class="palette-tags">
+        <span class="tag" style="color:#2563eb; border-color:#2563eb44">Light</span>
+        <span class="tag" style="color:#0ea5e9; border-color:#0ea5e944">Trustworthy</span>
+        <span class="tag" style="color:#6b6b80; border-color:#6b6b8044">Minimal</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Neon Terminal -->
+  <div class="palette-card">
+    <div class="palette-swatches">
+      <div class="swatch" style="background:#0d0d0d"><div class="swatch-label">#0D0D0D</div></div>
+      <div class="swatch" style="background:#141414"><div class="swatch-label">#141414</div></div>
+      <div class="swatch" style="background:#00ff9f"><div class="swatch-label">#00FF9F</div></div>
+      <div class="swatch" style="background:#ff2d78"><div class="swatch-label">#FF2D78</div></div>
+      <div class="swatch" style="background:#ffe500"><div class="swatch-label">#FFE500</div></div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Neon Terminal</div>
+      <div class="palette-desc">Pure black with punchy neon accents. Hacker aesthetic — great for dev tools and APIs.</div>
+      <div class="palette-tags">
+        <span class="tag" style="color:#00ff9f; border-color:#00ff9f33">Developer</span>
+        <span class="tag" style="color:#ff2d78; border-color:#ff2d7833">Bold</span>
+        <span class="tag" style="color:#ffe500; border-color:#ffe50033">Cyberpunk</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Slate & Coral -->
+  <div class="palette-card">
+    <div class="palette-swatches">
+      <div class="swatch" style="background:#1c2333"><div class="swatch-label">#1C2333</div></div>
+      <div class="swatch" style="background:#242d40"><div class="swatch-label">#242D40</div></div>
+      <div class="swatch" style="background:#ff6b6b"><div class="swatch-label">#FF6B6B</div></div>
+      <div class="swatch" style="background:#ffd93d"><div class="swatch-label">#FFD93D</div></div>
+      <div class="swatch" style="background:#c8d6e5"><div class="swatch-label">#C8D6E5</div></div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Slate & Coral</div>
+      <div class="palette-desc">Warm slate greys softened by coral and amber. Approachable yet technical — ideal for startups.</div>
+      <div class="palette-tags">
+        <span class="tag" style="color:#ff6b6b; border-color:#ff6b6b33">Startup</span>
+        <span class="tag" style="color:#ffd93d; border-color:#ffd93d33">Friendly</span>
+        <span class="tag" style="color:#6b6b80; border-color:#6b6b8044">Modern</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. Forest Matrix -->
+  <div class="palette-card">
+    <div class="palette-swatches">
+      <div class="swatch" style="background:#0a1628"><div class="swatch-label">#0A1628</div></div>
+      <div class="swatch" style="background:#0d2137"><div class="swatch-label">#0D2137</div></div>
+      <div class="swatch" style="background:#00c896"><div class="swatch-label">#00C896</div></div>
+      <div class="swatch" style="background:#14b8a6"><div class="swatch-label">#14B8A6</div></div>
+      <div class="swatch" style="background:#e0f2f1"><div class="swatch-label">#E0F2F1</div></div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Forest Matrix</div>
+      <div class="palette-desc">Deep ocean tones with emerald and teal accents. Suggests data, growth, and innovation.</div>
+      <div class="palette-tags">
+        <span class="tag" style="color:#00c896; border-color:#00c89633">Fintech</span>
+        <span class="tag" style="color:#14b8a6; border-color:#14b8a633">Data</span>
+        <span class="tag" style="color:#6b6b80; border-color:#6b6b8044">Growth</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. Titanium Light -->
+  <div class="palette-card">
+    <div class="palette-swatches">
+      <div class="swatch" style="background:#f8fafc"><div class="swatch-label">#F8FAFC</div></div>
+      <div class="swatch" style="background:#e2e8f0"><div class="swatch-label">#E2E8F0</div></div>
+      <div class="swatch" style="background:#334155"><div class="swatch-label">#334155</div></div>
+      <div class="swatch" style="background:#6366f1"><div class="swatch-label">#6366F1</div></div>
+      <div class="swatch" style="background:#0f172a"><div class="swatch-label">#0F172A</div></div>
+    </div>
+    <div class="palette-info">
+      <div class="palette-name">Titanium Light</div>
+      <div class="palette-desc">Cool greys with indigo pop. Feels like premium hardware — confident, restrained, and modern.</div>
+      <div class="palette-tags">
+        <span class="tag" style="color:#6366f1; border-color:#6366f133">Premium</span>
+        <span class="tag" style="color:#334155; border-color:#33415533">Refined</span>
+        <span class="tag" style="color:#6b6b80; border-color:#6b6b8044">Hardware</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ——— FONT SHOWCASE ——— -->
+<div class="section-title">Display & Heading Fonts</div>
+<div class="fonts-grid">
+
+  <div class="font-card" data-role="Display">
+    <div class="font-preview-big" style="font-family:'Syne',sans-serif; font-weight:800">Fix. Connect. Solve.</div>
+    <div class="font-preview-body" style="font-family:'Syne',sans-serif">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>0123456789 !@#$</div>
+    <div class="font-meta">
+      <div>
+        <div class="font-name">Syne</div>
+        <div class="font-source">Google Fonts — Free</div>
+      </div>
+      <div style="font-size:0.72rem; color:#6b6b80">Geometric · Bold · Modern</div>
+    </div>
+  </div>
+
+  <div class="font-card" data-role="Display">
+    <div class="font-preview-big" style="font-family:'Exo 2',sans-serif; font-weight:800">Fast. Reliable. Smart.</div>
+    <div class="font-preview-body" style="font-family:'Exo 2',sans-serif">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>0123456789 !@#$</div>
+    <div class="font-meta">
+      <div>
+        <div class="font-name">Exo 2</div>
+        <div class="font-source">Google Fonts — Free</div>
+      </div>
+      <div style="font-size:0.72rem; color:#6b6b80">Futuristic · Rounded · Energetic</div>
+    </div>
+  </div>
+
+  <div class="font-card" data-role="Display">
+    <div class="font-preview-big" style="font-family:'Rajdhani',sans-serif; font-weight:700">Tech. Support. Done Right.</div>
+    <div class="font-preview-body" style="font-family:'Rajdhani',sans-serif">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>0123456789 !@#$</div>
+    <div class="font-meta">
+      <div>
+        <div class="font-name">Rajdhani</div>
+        <div class="font-source">Google Fonts — Free</div>
+      </div>
+      <div style="font-size:0.72rem; color:#6b6b80">Sharp · Technical · Condensed</div>
+    </div>
+  </div>
+
+  <div class="font-card" data-role="Monospace">
+    <div class="font-preview-big" style="font-family:'Space Mono',monospace; font-weight:700; font-size:clamp(1.4rem,4vw,2.4rem)">$ run ./repair.sh</div>
+    <div class="font-preview-body" style="font-family:'Space Mono',monospace">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>0123456789 !@#$</div>
+    <div class="font-meta">
+      <div>
+        <div class="font-name">Space Mono</div>
+        <div class="font-source">Google Fonts — Free</div>
+      </div>
+      <div style="font-size:0.72rem; color:#6b6b80">Mono · Retro · Developer</div>
+    </div>
+  </div>
+
+  <div class="font-card" data-role="Body">
+    <div class="font-preview-big" style="font-family:'Outfit',sans-serif; font-weight:700">Your IT. Simplified.</div>
+    <div class="font-preview-body" style="font-family:'Outfit',sans-serif">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>0123456789 !@#$</div>
+    <div class="font-meta">
+      <div>
+        <div class="font-name">Outfit</div>
+        <div class="font-source">Google Fonts — Free</div>
+      </div>
+      <div style="font-size:0.72rem; color:#6b6b80">Friendly · Clean · Versatile</div>
+    </div>
+  </div>
+
+  <div class="font-card" data-role="Body">
+    <div class="font-preview-big" style="font-family:'Figtree',sans-serif; font-weight:700">Always Connected.</div>
+    <div class="font-preview-body" style="font-family:'Figtree',sans-serif">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>0123456789 !@#$</div>
+    <div class="font-meta">
+      <div>
+        <div class="font-name">Figtree</div>
+        <div class="font-source">Google Fonts — Free</div>
+      </div>
+      <div style="font-size:0.72rem; color:#6b6b80">Rounded · Warm · Approachable</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ——— FONT PAIRINGS ——— -->
+<div class="section-title">Recommended Font Pairings</div>
+<div class="pairings-grid">
+
+  <!-- Pairing 1 -->
+  <div class="pairing-card">
+    <div class="pairing-preview" style="background:linear-gradient(135deg,#0a0f1e,#1a1040); color:#e8e8f0">
+      <div class="pairing-heading" style="font-family:'Exo 2',sans-serif; font-weight:800; color:#00d2ff">Expert Tech Support, On Demand</div>
+      <div class="pairing-body" style="font-family:'Outfit',sans-serif">From broken screens to WiFi headaches — we handle every issue fast so you can get back to what matters.</div>
+    </div>
+    <div class="pairing-meta">
+      <span class="pairing-label">Exo 2 (Heading) + Outfit (Body)</span>
+      <span class="pairing-badge">Startup / Bold</span>
+    </div>
+  </div>
+
+  <!-- Pairing 2 -->
+  <div class="pairing-card">
+    <div class="pairing-preview" style="background:#f0f4ff; color:#1e293b">
+      <div class="pairing-heading" style="font-family:'Syne',sans-serif; font-weight:800; color:#2563eb">Reliable IT Support You Can Trust</div>
+      <div class="pairing-body" style="font-family:'DM Sans',sans-serif; color:#475569">Professional, friendly, and always available. We solve your tech problems quickly and clearly.</div>
+    </div>
+    <div class="pairing-meta">
+      <span class="pairing-label">Syne (Heading) + DM Sans (Body)</span>
+      <span class="pairing-badge">Clean / Professional</span>
+    </div>
+  </div>
+
+  <!-- Pairing 3 -->
+  <div class="pairing-card">
+    <div class="pairing-preview" style="background:#0d0d0d; color:#e8e8f0">
+      <div class="pairing-heading" style="font-family:'Rajdhani',sans-serif; font-weight:700; color:#00ff9f; font-size:clamp(1.5rem,3vw,2rem)">SYSTEM ONLINE. PROBLEMS SOLVED.</div>
+      <div class="pairing-body" style="font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:#666">// PC repair · WiFi · Printers · Mobile support</div>
+    </div>
+    <div class="pairing-meta">
+      <span class="pairing-label">Rajdhani (Heading) + JetBrains Mono (Body)</span>
+      <span class="pairing-badge">Developer / Edge</span>
+    </div>
+  </div>
+
+  <!-- Pairing 4 -->
+  <div class="pairing-card">
+    <div class="pairing-preview" style="background:linear-gradient(135deg,#1c2333,#0a1628); color:#e8e8f0">
+      <div class="pairing-heading" style="font-family:'Syne',sans-serif; font-weight:700; color:#00c896">We Fix It. You Forget It.</div>
+      <div class="pairing-body" style="font-family:'Figtree',sans-serif; color:#94a3b8">Same-day tech support for homes and businesses. No jargon. No stress. Just results.</div>
+    </div>
+    <div class="pairing-meta">
+      <span class="pairing-label">Syne (Heading) + Figtree (Body)</span>
+      <span class="pairing-badge">Friendly / Premium</span>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

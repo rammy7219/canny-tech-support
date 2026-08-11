@@ -1,123 +1,128 @@
-// Hamburger mobile menu
 const hamburger = document.getElementById('hamburger');
 const drawer = document.getElementById('mobile-drawer');
-const helpPills = document.querySelectorAll('.help-pill');
+const revealElements = document.querySelectorAll('.reveal');
+const contactForm = document.getElementById('contact-form');
 
-function closeMenu() {
-  drawer.classList.remove('open');
-  hamburger.setAttribute('aria-label', 'Open menu');
-  hamburger.querySelectorAll('span')[0].style.transform = '';
-  hamburger.querySelectorAll('span')[1].style.opacity = '1';
-  hamburger.querySelectorAll('span')[2].style.transform = '';
-}
-
-function setSectionHighlight(section) {
-  if (!section) return;
-  section.classList.add('highlight');
-  setTimeout(() => section.classList.remove('highlight'), 1200);
-}
-
-function scrollToSection(targetId) {
-  const section = document.getElementById(targetId);
-  if (!section) return;
-  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  setSectionHighlight(section);
-}
-
-if (helpPills.length) {
-  helpPills.forEach((pill) => {
-    pill.addEventListener('click', () => {
-      scrollToSection(pill.dataset.target);
-    });
-  });
-}
-
-hamburger.addEventListener('click', function() {
-  const isOpen = drawer.classList.toggle('open');
+function setMenuState(isOpen) {
+  if (!drawer || !hamburger) return;
+  drawer.classList.toggle('open', isOpen);
+  hamburger.setAttribute('aria-expanded', String(isOpen));
   hamburger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
   const bars = hamburger.querySelectorAll('span');
-  if (isOpen) {
-    bars[0].style.transform = 'translateY(7px) rotate(45deg)';
-    bars[1].style.opacity = '0';
-    bars[2].style.transform = 'translateY(-7px) rotate(-45deg)';
-  } else {
-    closeMenu();
-  }
-});
-
-drawer.querySelectorAll('a').forEach(function(a) {
-  a.addEventListener('click', closeMenu);
-});
-
-// Close if clicking outside
-document.addEventListener('click', function(e) {
-  if (!hamburger.contains(e.target) && !drawer.contains(e.target)) {
-    closeMenu();
-  }
-});
-
-// Formspree AJAX submission
-const contactForm = document.getElementById('contact-form');
-if (contactForm) {
-  contactForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const btn = document.getElementById('submit-btn');
-    const successMsg = document.getElementById('success-msg');
-    const errorMsg = document.getElementById('error-msg');
-
-    successMsg.style.display = 'none';
-    errorMsg.style.display = 'none';
-
-    btn.textContent = 'Sending...';
-    btn.disabled = true;
-    btn.style.opacity = '0.7';
-
-    const data = new FormData(contactForm);
-
-    try {
-      const res = await fetch('https://formspree.io/f/mzdakapl', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (res.ok) {
-        successMsg.style.display = 'block';
-        successMsg.classList.add('animate');
-        setTimeout(() => successMsg.classList.remove('animate'), 1400);
-        contactForm.reset();
-      } else {
-        const json = await res.json();
-        errorMsg.style.display = 'block';
-        console.error('Formspree error:', json);
-      }
-    } catch (err) {
-      errorMsg.style.display = 'block';
-      console.error('Network error:', err);
+  if (bars.length) {
+    if (isOpen) {
+      bars[0].style.transform = 'translateY(7px) rotate(45deg)';
+      bars[1].style.opacity = '0';
+      bars[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+    } else {
+      bars[0].style.transform = '';
+      bars[1].style.opacity = '1';
+      bars[2].style.transform = '';
     }
+  }
+}
 
-    btn.textContent = 'Send Message ✓';
-    btn.disabled = false;
-    btn.style.opacity = '1';
+function closeMenu() {
+  setMenuState(false);
+}
+
+if (hamburger && drawer) {
+  hamburger.addEventListener('click', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const isOpen = drawer.classList.contains('open');
+    setMenuState(!isOpen);
+  });
+
+  drawer.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('click', function (event) {
+    const clickedInside = hamburger.contains(event.target) || drawer.contains(event.target);
+    if (!clickedInside) {
+      closeMenu();
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 900) {
+      closeMenu();
+    }
   });
 }
 
-// Intersection observer for fade-in
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.style.opacity = '1';
-      e.target.style.transform = 'translateY(0)';
-      e.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.unobserve(e.target);
+if (revealElements.length && 'IntersectionObserver' in window) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealElements.forEach((element) => observer.observe(element));
+} else {
+  revealElements.forEach((element) => element.classList.add('in'));
+}
+
+if (contactForm) {
+  contactForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const submitButton = document.getElementById('submit-btn');
+    const successMessage = document.getElementById('success-msg');
+    const errorMessage = document.getElementById('error-msg');
+
+    if (successMessage) successMessage.style.display = 'none';
+    if (errorMessage) errorMessage.style.display = 'none';
+
+    if (submitButton) {
+      submitButton.textContent = 'Sending...';
+      submitButton.disabled = true;
+      submitButton.style.opacity = '0.7';
+    }
+
+    const formData = new FormData(contactForm);
+
+    try {
+      const response = await fetch('https://formspree.io/f/mzdakapl', {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' }
+      });
+
+      if (response.ok) {
+        if (successMessage) {
+          successMessage.style.display = 'block';
+          successMessage.classList.add('animate');
+          setTimeout(() => successMessage.classList.remove('animate'), 1400);
+        }
+        contactForm.reset();
+      } else {
+        let payload = null;
+        try {
+          payload = await response.json();
+        } catch (error) {
+          payload = null;
+        }
+        if (errorMessage) {
+          errorMessage.style.display = 'block';
+        }
+        console.error('Formspree error:', payload);
+      }
+    } catch (error) {
+      if (errorMessage) {
+        errorMessage.style.display = 'block';
+      }
+      console.error('Network error:', error);
+    }
+
+    if (submitButton) {
+      submitButton.textContent = 'Send message';
+      submitButton.disabled = false;
+      submitButton.style.opacity = '1';
     }
   });
-}, { threshold: 0.15 });
-
-// Elements to fade in
-document.querySelectorAll('.service-card, .ai-feature, .about-text, .hero-badge, .hero-sub, .hero-actions').forEach(el => {
-  el.style.opacity = '0';
-  el.style.transform = 'translateY(20px)';
-  observer.observe(el);
-});
+}
